@@ -7,29 +7,13 @@ import sys
 import quickfix as fix
 import quickfix44 as fix44
 
+from classes.book import LAST_TRADE,BOOK
+
 # configured
 __SOH__ = chr(1)
 
 
 
-class LAST_TRADE():
-    def __init__(self):
-        self.Symbol=""
-        self.MDEntryID=""
-        self.MDUpdateAction=""
-        self.MDEntryType=""
-        self.MDEntryPx=0
-        self.MDEntrySize=0
-    def __str__(self):
-        return ('LT: \t%s\tPrice: %f\tSize: %f'
-                % (self.Symbol,self.MDEntryPx, self.MDEntrySize))
-
-class BOOK():
-    symbol = ""
-    bid = list()
-    ask = list()
-    bid_size = list()
-    ask_size = list()
 
 class FixConnector(fix.Application):
     """FIX Application"""
@@ -114,12 +98,10 @@ class FixConnector(fix.Application):
                 group.getField(qty)
                 security.MinQty = qty.getValue()
 
-            self.callback(security)
+            fire(self.callback, "OnTradeUpdated",**{"trade":security})
 
-        book = BOOK()
         if msgType.getValue() == 'W':
-
-
+            book = BOOK()
             Symbol = fix.Symbol()
             message.getField(Symbol)
             book.symbol = Symbol.getValue()
@@ -144,7 +126,8 @@ class FixConnector(fix.Application):
                     book.ask.append(MDEntryPx.getValue())
                     book.ask_size.append(MDEntrySize.getValue())
 
-            print("TOB:\t" + book.symbol + "\tAsk_Px: " + str(book.ask[0]) + "\tAsk_size: " + str(book.ask_size[0]) + "\tBid_px: " + str(book.bid[0]) + "\tBid_size: " + str(book.bid_size[0]))
+            fire(self.callback, "OnBookUpdated",**{"book":book})
+
     pass
 
 
@@ -214,3 +197,7 @@ class FixConnector(fix.Application):
 
         fix.Session.sendToTarget(nos, self.sessionID)
 
+
+def fire(handlers, event, **kwargs):
+    for handler in handlers.get(event, []):
+        handler(**kwargs)

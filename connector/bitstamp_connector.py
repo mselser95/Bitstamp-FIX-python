@@ -11,7 +11,6 @@ class BitStamp_Connector(MarketData):
 
     def __init__(self,Brain):
         self.fix_connector = FixConnector(Brain)
-
         self.settings = quickfix.SessionSettings("./config/config.cfg")
         storefactory = quickfix.FileStoreFactory(self.settings)
         logfactory = quickfix.FileLogFactory(self.settings)
