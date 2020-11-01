@@ -1,7 +1,6 @@
 import connector.bitstamp_connector as connector
 import time
 from classes.book import LAST_TRADE,BOOK
-from enum import Enum
 import collections
 import bitstamp.client
 
@@ -21,7 +20,7 @@ class Brain():
         self.register("OnTradeUpdated", self.OnTradeUpdated)
         self.connector = connector.BitStamp_Connector(self.handlers)
         self.trading_client = bitstamp.client.Trading(
-        username = 'lpwp6653', key = 'y8VFFMi75qWGVARu0RLiAp3SlHe2TAvZ', secret = 'PTA2OPhWm04UR8tF5eMEk7JhBFVQRjur')
+        username = 'YOUR USERNAME ID', key = 'YOUT API KEY', secret = 'YOUR API SECRET')
 
 
     def register(self, event, callback):
@@ -29,16 +28,26 @@ class Brain():
 
     def run(self):
         self.GetBalance()
-        # self.connector.get_streaming_data("BTC/USD")
+        self.connector.get_streaming_data("BTC/USD")
         # self.connector.send_limit_order("BTC/USD", "BUY", 0, 100)
         while 1:
             time.sleep(1)
         # connector.stop_streaming_data("BTC/USD")
 
     def OnBookUpdated(self,book):
+
+        """
+        YOUR CODE TO RUN ON BOOK UPDATED
+        """
+
         print(book)
 
     def OnTradeUpdated(self,trade):
+
+        """
+        YOUR CODE TO RUN ON BOOK UPDATED
+        """
+
         print(trade)
 
     def GetBalance(self):

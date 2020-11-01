@@ -39,8 +39,8 @@ class FixConnector(fix.Application):
         return
 
     def toAdmin(self, message, sessionID):
-        username = fix.Username("w8poYpKKww6gHqclxdzxYYcVnHODFnAz")
-        mypass = fix.Password("eSEMPHiajtPWk3ZvYXFx4MhziuzqIyRc")
+        username = fix.Username("YOUR API KEY")
+        mypass = fix.Password("YOUR API SECRET")
         message.setField(username)
         message.setField(mypass)
         msg = message.toString().replace(__SOH__, "|")

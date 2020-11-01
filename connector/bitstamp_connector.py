@@ -17,7 +17,8 @@ class BitStamp_Connector(MarketData):
         self.initiator = quickfix.SocketInitiator(self.fix_connector, storefactory, self.settings, logfactory)
         self.initiator.start()
         while not self.initiator.isLoggedOn():
-            a = 1
+            continue
+
 
     def get_streaming_data(self, ticker):
         self.fix_connector.marketDataRequest(ticker,
